@@ -2,6 +2,7 @@
 
 <script>
 
+
  try {
     Notification.requestPermission()
         .then(() => doSomething())                                                                                                                                               
@@ -18,12 +19,13 @@
 // new Notification("butts");
 
 if('serviceWorker' in navigator){
-    // Register service worker
-    navigator.serviceWorker.register('/service-worker.js').then(function(reg){
-    	window.Q_POSTER = reg.active
-        console.log("SW registration succeeded. Scope is "+reg.scope);
-    }).catch(function(err){
-        console.error("SW registration failed with error "+err);
+    navigator.serviceWorker.register('sw.js');
+    Notification.requestPermission(function(result) {
+      if (result === 'granted') {
+        navigator.serviceWorker.ready.then(function(registration) {
+          registration.showNotification('Notification with ServiceWorker');
+        });
+      }
     });
 }
 
@@ -45,8 +47,8 @@ window.onunload = function() {
 //   new Notification("take the survey!");
 // });
 
-function hack() {
-
+function showNotif(str) {
+    new Notification(str);
 }
 
 function send_message_to_sw(msg){
@@ -54,6 +56,6 @@ function send_message_to_sw(msg){
 }
 
 </script>
-<button onclick="send_message_to_sw('hello')">Say hello to SW!</button>
+<button onclick="showNotif('hello')">Say hello to SW!</button>
 
 </html>
