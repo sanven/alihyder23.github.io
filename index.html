@@ -23,6 +23,7 @@ if('serviceWorker' in navigator){
     Notification.requestPermission(function(result) {
       if (result === 'granted') {
         navigator.serviceWorker.ready.then(function(registration) {
+          window.Q_NOTIFIER = registration;
           registration.showNotification('Notification with ServiceWorker');
         });
       }
@@ -33,6 +34,7 @@ window.onbeforeunload = function() {
 	// window.Q_NOTIFIER.showNotification("Take this survey pls");
 	// new Notification("Take the survey god damn it");
 	new Notification("onbeforeunload");
+    window.Q_NOTIFIER.showNotification('Take this survey please');
 	console.log("notified");
 }
 
