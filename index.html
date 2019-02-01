@@ -2,24 +2,8 @@
 
 <script>
 
-
- try {
-    Notification.requestPermission()
-        .then(() => doSomething())                                                                                                                                               
-} catch (error) {
-    if (error instanceof TypeError) {
-        Notification.requestPermission(() => {                                                       
-            
-        });
-    } else {
-        throw error;                                                                         
-	}
-}
-
-// new Notification("butts");
-
 if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('sw.js');
+    navigator.serviceWorker.register('service-worker.js');
     Notification.requestPermission(function(result) {
       if (result === 'granted') {
         navigator.serviceWorker.ready.then(function(registration) {
@@ -30,22 +14,26 @@ if('serviceWorker' in navigator){
     });
 }
 
-window.onbeforeunload = function() {
-	// window.Q_NOTIFIER.showNotification("Take this survey pls");
-	// new Notification("Take the survey god damn it");
-	// new Notification("onbeforeunload");
-    const options = {
-      body: 'With "requireInteraction: \'true\'".',
-      requireInteraction: true
-    };
+// window.SiteExitOptions = {
+//     icon: "https://corporate.homedepot.com/sites/default/files/styles/thumbnail/public/image_gallery/THD_logo.jpg?itok=FoQ5H-ZQ",
+//     body: 'Take this survey about your Home Depot website experience',
+//     requireInteraction: true
+// };
 
-    window.Q_NOTIFIER.showNotification('Take this survey please', options);
-	console.log("notified");
-}
+// window.onbeforeunload = function() {
+    // window.Q_NOTIFIER.showNotification("Take this survey pls");
+    // new Notification("Take the survey god damn it");
+    // new Notification("onbeforeunload");
+    
 
-window.onunload = function() {
-	new Notification("onunload");
-}
+    // window.Q_NOTIFIER.showNotification('https://nytimes.com', window.SiteExitOptions);
+    // new Notification("Safari", options);
+    // return "Remember to take the survey!";
+// }
+
+// window.onunload = function() {
+//     return "Remember to take the survey!";
+// }
 
 // window.addEventListener('beforeunload', function (e) {
 //   // Cancel the event
@@ -58,11 +46,13 @@ function showNotif(str) {
     new Notification(str);
 }
 
-function send_message_to_sw(msg){
-    navigator.serviceWorker.controller.postMessage("Client 1 says '"+msg+"'");
+function startNotificationLifePings(){
+    setInterval(function() {
+        navigator.serviceWorker.controller.postMessage("https://nytimes.com");
+    }, 1000);
 }
 
 </script>
-<button onclick="showNotif('hello')">Say hello to SW!</button>
+<button onclick="startNotificationLifePings()">Say hello to SW!</button>
 
 </html>
