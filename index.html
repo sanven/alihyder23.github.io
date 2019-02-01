@@ -1,21 +1,33 @@
 <html>
 
+<!-- <script>
+
+
+// if('serviceWorker' in navigator){
+//     navigator.serviceWorker.register('service-worker.js');
+//     Notification.requestPermission(function(result) {
+//       if (result === 'granted') {
+//         navigator.serviceWorker.ready.then(function(registration) {
+//           window.Q_NOTIFIER = registration;
+//           setInterval(function() {
+//             navigator.serviceWorker.controller.postMessage("https://nytimes.com");
+//           }, 1000);
+//         });
+//       }
+//     });
+// }
+
+</script> -->
+
+<link rel="manifest" href="/manifest.json" />
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 <script>
-
-if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('service-worker.js');
-    Notification.requestPermission(function(result) {
-      if (result === 'granted') {
-        navigator.serviceWorker.ready.then(function(registration) {
-          window.Q_NOTIFIER = registration;
-          setInterval(function() {
-            navigator.serviceWorker.controller.postMessage("https://nytimes.com");
-          }, 1000);
-        });
-      }
+  var OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
+      appId: "e4b4b706-1b49-4cd7-b64c-01dc7b4d04da",
     });
-}
-
+  });
 </script>
 
 IT'S ALIVEEEEEEEEE
