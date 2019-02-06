@@ -16,15 +16,16 @@ self.addEventListener('activate', function(event){
 self.addEventListener('message', function(event){
     clearTimeout(self.notificationTimeout);
     self.notificationTimeout = setTimeout(function() {
-      self.registration.showNotification(event.data, {
-        title: "Please provide feedback!";
+      self.registration.showNotification(event.data.title, {
+        body: event.data.body,
+        icon: event.data.icon,
       });
     }, 2000);
-    self.targetPage = event.data;
+    console.log("received lifecheck");
+    self.targetPage = event.data.targetUrl;
 });
 
 self.addEventListener('notificationclick', function(event) {
-  console.log('On notification click: ', event.notification.tag);
   event.notification.close();
 
   event.waitUntil(clients.matchAll({
