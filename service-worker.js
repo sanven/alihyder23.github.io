@@ -1,28 +1,41 @@
 console.log("SW Startup!");
 
-
-
 // Install Service Worker
 self.addEventListener('install', function(event){
-    console.log('installed!');
+    event.waitUntil(self.skipWaiting()); // Activate worker immediately
+    console.log("installed!");
 });
 
 // Service Worker Active
 self.addEventListener('activate', function(event){
-    self.clients.claim()
+    event.waitUntil(self.clients.claim());
     console.log('activated!');
 });
 
 self.addEventListener('message', function(event){
-    clearTimeout(self.notificationTimeout);
-    self.notificationTimeout = setTimeout(function() {
-      self.registration.showNotification(event.data.title, {
-        body: event.data.body,
-        icon: event.data.icon,
-      });
-    }, 3500);
-    console.log("received lifecheck");
-    self.targetPage = event.data.targetUrl;
+  self.notificationData = {};
+  self.notificationData.title = event.data.title;
+  self.notificationData.body = event.data.body;
+  self.notificationData.icon = event.data.icon;
+  self.notificationData.targetPage = event.data.targetUrl;
+
+  self.notificationInterval = setInterval(function() {
+    clients.matchAll({
+      type: "window"
+    }).then(function(clientList) {
+        console.log(clientList);
+        // if visitor has closed out of all tabs
+        if (clientList.length === 0) {
+          clearInterval(self.notificationInterval);
+          self.registration.showNotification(self.notificationData.title, {
+            body: self.notificationData.body,
+            icon: self.notificationData.icon,
+          });
+        }
+    });
+  }, 3000);
+
+  console.log("received notification data and it has been set");
 });
 
 self.addEventListener('notificationclick', function(event) {
@@ -31,6 +44,6 @@ self.addEventListener('notificationclick', function(event) {
   event.waitUntil(clients.matchAll({
     type: "window"
   }).then(function(clientList) {
-      return clients.openWindow(self.targetPage);
+      return clients.openWindow(self.notificationData.targetPage);
   }));
 });
