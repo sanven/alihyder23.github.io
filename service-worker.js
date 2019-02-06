@@ -20,7 +20,7 @@ self.addEventListener('message', function(event){
         body: event.data.body,
         icon: event.data.icon,
       });
-    }, 10000);
+    }, 3500);
     console.log("received lifecheck");
     self.targetPage = event.data.targetUrl;
 });
