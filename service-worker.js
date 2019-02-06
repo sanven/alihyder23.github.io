@@ -16,7 +16,9 @@ self.addEventListener('activate', function(event){
 self.addEventListener('message', function(event){
     clearTimeout(self.notificationTimeout);
     self.notificationTimeout = setTimeout(function() {
-      self.registration.showNotification(event.data);
+      self.registration.showNotification(event.data, {
+        title: "Please provide feedback!";
+      });
     }, 2000);
     self.targetPage = event.data;
 });
