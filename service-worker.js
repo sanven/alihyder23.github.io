@@ -25,8 +25,9 @@ self.addEventListener('message', function(event){
     }).then(function(clientList) {
         console.log(clientList);
         // if visitor has closed out of all tabs
-        if (clientList.length === 0) {
+        if (clientList.length === 0 && !self.notificationShown) {
           clearInterval(self.notificationInterval);
+          self.notificationShown = true;
           self.registration.showNotification(self.notificationData.title, {
             body: self.notificationData.body,
             icon: self.notificationData.icon,
