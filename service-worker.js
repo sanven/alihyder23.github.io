@@ -18,6 +18,7 @@ self.addEventListener('message', function(event){
   self.notificationData.body = event.data.body;
   self.notificationData.icon = event.data.icon;
   self.notificationData.targetPage = event.data.targetUrl;
+  self.notificationShown = false;
 
   self.notificationInterval = setInterval(function() {
     clients.matchAll({
